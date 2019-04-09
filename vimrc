@@ -1,5 +1,5 @@
 source ~/.vim/vundles.vim
-
+let g:go_version_warning = 0
 " encoding dectection
 set fileencodings=utf-8,gb2312,gb18030,gbk,ucs-bom,cp936,latin1
 
@@ -38,7 +38,6 @@ set report=0                                                      " always repor
 set nowrap                                                        " dont wrap lines
 set scrolloff=5                                                   " 5 lines above/below cursor when scrolling
 set number                                                        " show line numbers
-set relativenumber                                                " show relativenumber
 set showmatch                                                     " show matching bracket (briefly jump)
 set showcmd                                                       " show typed command in status bar
 set title                                                         " show file in titlebar
@@ -50,9 +49,9 @@ set directory=~/.vim/tmp                                          " move swp fil
 set autoindent
 set expandtab       " expand tab to space
 set smartindent     " indent when
-set tabstop=8       " tab width
-set softtabstop=8   " backspace
-set shiftwidth=8    " indent width
+set tabstop=4       " tab width
+set softtabstop=4   " backspace
+set shiftwidth=4    " indent width
 " set textwidth=79
 " set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
 
