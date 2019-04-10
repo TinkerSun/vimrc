@@ -242,3 +242,46 @@ if has("gui_running")
     map <D-9> 9gt
     map <D-0> :tablast<CR>
 endif
+
+map <F9> :call CompileRunGpp()<CR>
+func! CompileRunGpp()
+    exec "w"
+    exec "!g++ % -o %<"
+    exec "! ./%<"
+endfunc
+
+set tags=tags;
+"更新ctags，找寻父文件夹原有tags文件
+function UpdateCtags()
+    let curdir=getcwd()
+    while !filereadable("./tags")
+        cd ..
+        if getcwd() == "/"
+            break
+        endif
+    endwhile
+    if filewritable("./tags")
+        !ctags -R --c++-types=+px --excmd=pattern --exclude=Makefile --exclude=. --exclude=*.js
+    endif
+    execute ":cd " . curdir
+endfunction
+"映射键盘上的F10对应更新tags
+nmap <F10> :call UpdateCtags()<CR>
+
+
+function s:This_Cscope(file)
+    let file = a:file
+    if strlen(file) == 0
+        let file = s:Get_cur_file()
+    endif
+    let file = simplify(file)
+    let dir = simplify(s:Dirname(file))
+    let basename=substitute(system("sed -r -e 's/[.].+$//g' <<<$(basename " . file . ")"), "\n", "", "")
+    let out_name = dir . "/.cscope/" . basename . ".out"
+    echo out_name
+    if (filereadable(out_name) && 0 == cscope_connection(4, out_name, file))
+        execute "cscope add " . out_name . " " . dir
+    endif
+endfunction
+
+command -nargs=? -complete=file ThisCscope call <SID>This_Cscope('<args>')
